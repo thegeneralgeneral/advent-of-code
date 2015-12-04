@@ -9,7 +9,12 @@ def get_smallest_side(l, w, h):
 def get_paper_area(l, w, h):
   return get_surface_area(l, w, h) + get_smallest_side(l, w, h)
 
-def 
+def get_ribbon_length(l, w, h):
+  # smallest perimeter,
+  # plus volume in cubic feet.
+  perimeters = [2*l+2*w, 2*l+2*h, 2*w+2*h]
+  volume = l*w*h
+  return min(perimeters) + volume
 
 INPUT_STRING = """20x3x11
 15x27x5

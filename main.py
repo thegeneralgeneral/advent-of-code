@@ -17,6 +17,6 @@
 # print total
 
 # Day 3
-import day3
-print day3.get_num_houses_visited(day3.INPUT_STRING)
-print day3.get_total_houses_visited_with_robo_santa(day3.INPUT_STRING)
+# import day3
+# print day3.get_num_houses_visited(day3.INPUT_STRING)
+# print day3.get_total_houses_visited_with_robo_santa(day3.INPUT_STRING)

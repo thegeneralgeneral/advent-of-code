@@ -1,6 +1,7 @@
 import unittest
 from day3 import get_num_houses_visited, split_instructions, get_total_houses_visited_with_robo_santa
 from day4 import get_suffix_num_resulting_in_five_zeroes, get_suffix_num_resulting_in_six_zeroes
+from day5 import is_nice, is_nice_2, INPUT_STRING
 
 class Day3_numHousesVisitedTests(unittest.TestCase):
 
@@ -52,23 +53,49 @@ class GetNumHousesVisitedWithRoboSantaTests(unittest.TestCase):
 class Day4Tests(unittest.TestCase):
 
     def test_1(self):
-        print 'test_1'
         key = 'abcdef'
         result = get_suffix_num_resulting_in_five_zeroes(key)
         self.assertEqual(609043, result)
-        print result
         
     def test_2(self):
-        print 'test_2'
         key = 'pqrstuv'
         result = get_suffix_num_resulting_in_five_zeroes(key)
         self.assertEqual(1048970, result)
-        print result
     
     def test_puzzle_2(self):
-        print 'final'
         key = 'iwrupvqb'
         result = get_suffix_num_resulting_in_six_zeroes(key)
         self.assertEqual(9958218, result)
-        print result
+
+class Day5Tests(unittest.TestCase):
+    
+    def test_nice_1(self):
+        self.assertTrue(is_nice("ugknbfddgicrmopn"))
+    def test_nice_2(self):
+        self.assertTrue(is_nice("aaa"))
         
+    def test_naughty_1(self):
+        self.assertFalse(is_nice("jchzalrnumimnmhp"))
+    def test_naughty_2(self):
+        self.assertFalse(is_nice("haegwjzuvuyypxyu"))
+    def test_naughty_3(self):
+        self.assertFalse(is_nice("dvszwmarrgswjxmb"))
+    
+
+
+class Day5Part2Tests(unittest.TestCase):
+    
+    def test_1(self):
+        self.assertTrue(is_nice_2("qjhvhtzxzqqjkmpb"))
+     
+    def test_2(self):
+        self.assertTrue(is_nice_2("xxyxx"))
+
+    def test_3(self):
+        self.assertFalse(is_nice_2("uurcxstgmygtbstg"))
+        
+    def test_4(self):
+        self.assertFalse(is_nice_2("ieodomkazucvgmuy"))
+        
+    def test_overlap_doesnt_count(self):
+        self.assertFalse(is_nice_2("aaa"))

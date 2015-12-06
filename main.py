@@ -20,3 +20,23 @@
 # import day3
 # print day3.get_num_houses_visited(day3.INPUT_STRING)
 # print day3.get_total_houses_visited_with_robo_santa(day3.INPUT_STRING)
+
+# import day4
+# result = day4.get_suffix_num_resulting_in_five_zeroes("iwrupvqb")
+# print result
+# result = day4.get_suffix_num_resulting_in_six_zeroes("iwrupvqb")
+# print result
+
+import day5
+inputs = day5.INPUT_STRING.split('\n')
+num_nice = 0
+for i in inputs:
+    if day5.is_nice(i):
+        num_nice += 1
+print "Num nice: %s" % num_nice
+
+num_nice = 0
+for s in inputs:
+    if day5.is_nice_2(s):
+        num_nice += 1
+print "Num nice 2: %s" % num_nice  # 203 is too high

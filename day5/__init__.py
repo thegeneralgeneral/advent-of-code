@@ -20,14 +20,7 @@ def is_nice(input_string):
 
 
 def is_nice_2(input_string):
-    # needs to have a pair of letters that occur twice (but not overlapping)
-    # Needs to have a case where a letter occurs twice with exactly one letter between them.
-    if not has_duplicate_pair(input_string):
-        print "String is Naughty; has no duplicate pair"
-    if not contains_pair_separated_by_one(input_string):
-        print "String is Naughty; has no pair separated by one"
     nice = has_duplicate_pair(input_string) and contains_pair_separated_by_one(input_string)
-    print "%s is %s" % (input_string, "Nice!" if nice else "NAUGHTY")
     return nice
     
 def has_duplicate_pair(input_string):
@@ -36,18 +29,13 @@ def has_duplicate_pair(input_string):
         # Count the occurrences in the *rest* of the string.
         num_occurrences = input_string[i+2:].count(substring)
         if num_occurrences > 0:
-            print "Found %s occurrences of substring %s in input string %s" % \
-                (num_occurrences, substring, input_string)
             return True
-    print "No duplicate pair found in input string %s" % input_string
     return False
 
 def contains_pair_separated_by_one(input_string):
     for i in range(len(input_string)-2):
         if input_string[i] == input_string[i+2]:
-            print "Found separated pair %s" % input_string[i:i+3]
             return True
-    print "Found no separated pair"
     return False
     
 

@@ -101,7 +101,7 @@ class Day5Part2Tests(unittest.TestCase):
         self.assertFalse(is_nice_2("aaa"))
 
 
-from day6 import convert_instruction_string, apply_action_to_value, apply_instruction_to_grid, apply_instruction_string_to_grid, get_1000_by_1000_grid, get_num_lights_on
+from day6 import convert_instruction_string, apply_action_to_value, apply_instruction_to_grid, apply_instruction_string_to_grid, get_1000_by_1000_grid, get_num_lights_on, get_brightness
 
 class Day6_convertInstructionStringTests(unittest.TestCase):
     
@@ -124,17 +124,17 @@ class Day6_applyActionToValueTests(unittest.TestCase):
     
     def test_turn_on(self):
         result = apply_action_to_value("turn on", 0)
-        print result
         self.assertEqual(1, apply_action_to_value("turn on", 0))
-        self.assertEqual(1, apply_action_to_value("turn on", 1))
+        self.assertEqual(2, apply_action_to_value("turn on", 1))
     
     def test_turn_off(self):
         self.assertEqual(0, apply_action_to_value("turn off", 0))
         self.assertEqual(0, apply_action_to_value("turn off", 1))
+        self.assertEqual(4, apply_action_to_value("turn off", 5))
     
     def test_toggle(self):
-        self.assertEqual(1, apply_action_to_value("toggle", 0))
-        self.assertEqual(0, apply_action_to_value("toggle", 1))
+        self.assertEqual(2, apply_action_to_value("toggle", 0))
+        self.assertEqual(3, apply_action_to_value("toggle", 1))
         
 
 class Day6_applyInstructionToGridTests(unittest.TestCase):
@@ -184,3 +184,13 @@ class Day6_GetNumLightsOn(unittest.TestCase):
     def test_example_full(self):
         grid = [[1 for _ in xrange(1000)] for _ in xrange(1000)]
         self.assertEqual(1000000, get_num_lights_on(grid))
+
+class Day6_getBrightnessTests(unittest.TestCase):
+    def test_brightness(self):
+        example = [
+            [1, 2, 3, 0, 0],
+            [3, 3, 3, 3, 0],
+            [0, 0, 0, 0, 1]]
+        expected = 19
+        result = get_brightness(example)
+        self.assertEqual(expected, result)

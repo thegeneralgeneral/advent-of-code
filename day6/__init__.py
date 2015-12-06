@@ -28,11 +28,11 @@ def apply_instruction_to_grid(input_grid, instruction):
 
 def apply_action_to_value(action, value):
     if action == 'turn on':
-        return 1
+        return value + 1
     elif action == 'turn off':
-        return 0
+        return max(value - 1, 0)
     elif action == 'toggle':
-        return 0 if value == 1 else 1
+        return value + 2
 
 def get_num_lights_on(grid):
     total = 0
@@ -40,6 +40,8 @@ def get_num_lights_on(grid):
         for value in row:
             total += value
     return total
+
+get_brightness = get_num_lights_on # still just have to sum
     
 
 

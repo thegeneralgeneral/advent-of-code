@@ -45,4 +45,5 @@ import day6
 grid = day6.get_1000_by_1000_grid()
 for i in day6.INPUT_STRING.split('\n'):
     grid = day6.apply_instruction_string_to_grid(i, grid)
-print day6.get_num_lights_on(grid)
+# print day6.get_brightness(grid)
+

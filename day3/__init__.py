@@ -19,7 +19,6 @@ def get_houses_visited(input_string):
         elif c == '>':
             position[X] += 1
         if position not in houses_visited:
-            print "New house: %r" % position
             houses_visited.append([position[X], position[Y]])
     return houses_visited
 

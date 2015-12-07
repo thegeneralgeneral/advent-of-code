@@ -2,6 +2,7 @@ import unittest
 from day3 import get_num_houses_visited, split_instructions, get_total_houses_visited_with_robo_santa
 from day4 import get_suffix_num_resulting_in_five_zeroes, get_suffix_num_resulting_in_six_zeroes
 from day5 import is_nice, is_nice_2, INPUT_STRING
+import day7
 
 class Day3_numHousesVisitedTests(unittest.TestCase):
 
@@ -194,3 +195,98 @@ class Day6_getBrightnessTests(unittest.TestCase):
         expected = 19
         result = get_brightness(example)
         self.assertEqual(expected, result)
+
+class Day7ParseInstructionsTests(unittest.TestCase):
+    
+    def test_example_circuit(self):
+        circuit = """123 -> x
+456 -> y
+x AND y -> d
+x OR y -> e
+x LSHIFT 2 -> f
+y RSHIFT 2 -> g
+NOT x -> h
+NOT y -> i"""
+        expected = {
+            'x': 123,
+            'y': 456,
+            'd': ('AND', ['x', 'y']),
+            'e': ('OR', ['x', 'y']),
+            'f': ('LSHIFT', ['x', '2']),
+            'g': ('RSHIFT', ['y', '2']),
+            'h': ('NOT', [None, 'x']),
+            'i': ('NOT', [None, 'y'])
+        }
+        wires = day7.parse_instructions(circuit)
+        self.assertEqual(expected, wires)
+    
+    def test_wire_to_wire(self):
+        circuit = """123 -> x
+456 -> y
+x -> z"""
+        expected = {
+            'x': 123,
+            'y': 456,
+            'z': 'x'}
+        self.assertEqual(expected, day7.parse_instructions(circuit))
+        
+        
+class Day7AnalyzeCircuitTests(unittest.TestCase):
+    
+    def test_analyze_only_values(self):
+        circuit = {
+            'a': 123,
+            'b': 456
+        }
+        result = day7.analyze_circuit(circuit)
+        self.assertEqual(circuit, result)
+    
+    def test_analyze_with_dependent_not_gate(self):
+        circuit = {
+            'a': ('AND', ['b', 'c']),
+            'b': 123,
+            'c': 456
+        }
+        expected = {
+            'a': 72,
+            'b': 123,
+            'c': 456
+        }
+        result = day7.analyze_circuit(circuit)
+        self.assertEqual(expected, result)
+    
+    def test_analyze_given_example_circuit(self):
+        input_circuit = {
+            'x': 123,
+            'y': 456,
+            'd': ('AND', ['x', 'y']),
+            'e': ('OR', ['x', 'y']),
+            'f': ('LSHIFT', ['x', '2']),
+            'g': ('RSHIFT', ['y', '2']),
+            'h': ('NOT', [None, 'x']),
+            'i': ('NOT', [None, 'y'])
+        }
+        result = day7.analyze_circuit(input_circuit)
+        expected = {
+            'd': 72,
+            'e': 507,
+            'f': 492,
+            'g': 114,
+            'h': 65412,
+            'i': 65079,
+            'x': 123,
+            'y': 456,
+        }
+        self.assertEqual(expected, result)
+
+    def test_wire_to_wire(self):
+        circuit = {
+            'x': 123,
+            'y': 456,
+            'z': 'x'}
+        expected = {
+            'x': 123,
+            'y': 456,
+            'z': 123}
+        self.assertEqual(expected, day7.analyze_circuit(circuit))
+        

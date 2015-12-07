@@ -41,9 +41,13 @@
 #         num_nice += 1
 # print "Num nice 2: %s" % num_nice  # 203 is too high
 
-import day6
-grid = day6.get_1000_by_1000_grid()
-for i in day6.INPUT_STRING.split('\n'):
-    grid = day6.apply_instruction_string_to_grid(i, grid)
+# import day6
+# grid = day6.get_1000_by_1000_grid()
+# for i in day6.INPUT_STRING.split('\n'):
+#     grid = day6.apply_instruction_string_to_grid(i, grid)
 # print day6.get_brightness(grid)
 
+import day7
+
+circuit = day7.parse_instructions(day7.INPUT_STRING)
+print day7.analyze_circuit(circuit)

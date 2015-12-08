@@ -3,24 +3,16 @@ import re
 def parse_instructions(circuit):
     result = {}
     instructions = circuit.split('\n');
-    value_regex = r'(\d+) -> (\w+)'
-    wire_regex = r'(\w+) -> (\w+)'
+    single_value_regex = r'(\w+) -> (\w+)'
     gate_regex = r'(?:(\w+) )?([A-Z]+) (\w+) -> (\w+)'
     for inst in instructions:
-        value_match = re.match(value_regex, inst)
-        wire_match = re.match(wire_regex, inst)
-        if value_match:
-            value = value_match.group(1)
-            print 'Parsed value that is digits-only: %s' % value
-            wire_name = value_match.group(2)
-            result[wire_name] = int(value)
-        elif wire_match:
-            print 'Parsed value that is another wire: %s' %  value
-            wire_name = wire_match.group(2)
-            result[wire_name] = wire_match.group(1)
+        single_value_match = re.match(single_value_regex, inst)
+        if single_value_match:
+            value = single_value_match.group(1)
+            wire_name = single_value_match.group(2)
+            result[wire_name] = value
         else:
             # gate match.
-            print 'Parsed gate operation match: %s' % inst
             gate_match = re.match(gate_regex, inst)
             wire_name = gate_match.group(4)
             operation = gate_match.group(2)
@@ -29,30 +21,34 @@ def parse_instructions(circuit):
     return result
 
 def resolve_value(value, circuit):
-    print 'Resolving value %s' % str(value)
-    if isinstance(value, int):
-        print 'Already a resolved integer.'
-        return value
-    elif isinstance(value, str):
-        print 'Resolves to the value of another wire: %s' % value
-        return resolve_value(circuit[value], circuit)
+    # Value is one of:
+    #  An integer string (resolve to integer)
+    #  A char string (resolve to the resolved value of circuit[char]
+    #  A gate/operation (apply the operation to the resolved values as appropriate)
+    
+    if not isinstance(value, tuple):
+        # Single value - either 123 -> x or y -> x
+        if re.match(r'\d+', value):
+            return int(value)
+        else:
+            # this is a string - ie. a wire name
+            return resolve_value(circuit[value], circuit)
     # else, value is a tuple of (op, [args])
     else:
         op = value[0]
         args = value[1]
-        print 'Resolves to an operation: %s : %s' % (op, args)
         if op == 'AND':
-            return resolve_value(circuit[args[0]], circuit) & resolve_value(circuit[args[1]], circuit)
+            return resolve_value(args[0], circuit) & resolve_value(args[1], circuit)
         elif op == 'OR':
-            return resolve_value(circuit[args[0]], circuit) | resolve_value(circuit[args[1]], circuit)
+            return resolve_value(args[0], circuit) | resolve_value(args[1], circuit)
         elif op == 'LSHIFT':
-            return resolve_value(circuit[args[0]], circuit) << int(args[1])
+            return resolve_value(args[0], circuit) << resolve_value(args[1], circuit)
         elif op == 'RSHIFT':
-            return resolve_value(circuit[args[0]], circuit) >> int(args[1])
+            return resolve_value(args[0], circuit) >> resolve_value(args[1], circuit)
         elif op == 'NOT':
-            operand = resolve_value(circuit[args[1]], circuit)
+            operand = resolve_value(args[1], circuit)
             result = ~operand
-            return 65535 + result + 1 if result <= 0 else result
+            return 65535 + result + 1 if result < 0 else result
 
 def analyze_circuit(circuit):
     result = {}

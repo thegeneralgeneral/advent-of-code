@@ -48,6 +48,9 @@
 # print day6.get_brightness(grid)
 
 import day7
+import datetime
 
+print 'started: %s' % datetime.datetime.utcnow()
 circuit = day7.parse_instructions(day7.INPUT_STRING)
 print day7.analyze_circuit(circuit)
+print 'stopped: %s' % datetime.datetime.utcnow()

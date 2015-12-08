@@ -208,8 +208,8 @@ y RSHIFT 2 -> g
 NOT x -> h
 NOT y -> i"""
         expected = {
-            'x': 123,
-            'y': 456,
+            'x': '123',
+            'y': '456',
             'd': ('AND', ['x', 'y']),
             'e': ('OR', ['x', 'y']),
             'f': ('LSHIFT', ['x', '2']),
@@ -225,27 +225,48 @@ NOT y -> i"""
 456 -> y
 x -> z"""
         expected = {
-            'x': 123,
-            'y': 456,
+            'x': '123',
+            'y': '456',
             'z': 'x'}
         self.assertEqual(expected, day7.parse_instructions(circuit))
+    
+    def test_values_as_gate_inputs(self):
+        circuit = """123 -> x
+456 AND x -> y"""
+        expected = {
+            'x': '123',
+            'y': ('AND', ['456', 'x'])}
+        self.assertEqual(expected, day7.parse_instructions(circuit))
+
+class Day7ResolveValueTests(unittest.TestCase):
+    def test_resolve_and_gate(self):
+        circuit = {
+            'a': ('AND', ['123', 'b']),
+            'b': '456'
+        }
+        expected = 72
+        self.assertEqual(expected, day7.resolve_value('a', circuit))
         
         
 class Day7AnalyzeCircuitTests(unittest.TestCase):
     
     def test_analyze_only_values(self):
         circuit = {
+            'a': '123',
+            'b': '456'
+        }
+        expected = {
             'a': 123,
             'b': 456
         }
         result = day7.analyze_circuit(circuit)
-        self.assertEqual(circuit, result)
+        self.assertEqual(expected, result)
     
     def test_analyze_with_dependent_not_gate(self):
         circuit = {
             'a': ('AND', ['b', 'c']),
-            'b': 123,
-            'c': 456
+            'b': '123',
+            'c': '456'
         }
         expected = {
             'a': 72,
@@ -257,8 +278,8 @@ class Day7AnalyzeCircuitTests(unittest.TestCase):
     
     def test_analyze_given_example_circuit(self):
         input_circuit = {
-            'x': 123,
-            'y': 456,
+            'x': '123',
+            'y': '456',
             'd': ('AND', ['x', 'y']),
             'e': ('OR', ['x', 'y']),
             'f': ('LSHIFT', ['x', '2']),
@@ -281,12 +302,20 @@ class Day7AnalyzeCircuitTests(unittest.TestCase):
 
     def test_wire_to_wire(self):
         circuit = {
-            'x': 123,
-            'y': 456,
+            'x': '123',
+            'y': '456',
             'z': 'x'}
         expected = {
             'x': 123,
             'y': 456,
             'z': 123}
         self.assertEqual(expected, day7.analyze_circuit(circuit))
-        
+    
+    def test_analyze_with_value_as_gate_input(self):
+        circuit = {
+            'x':  ('AND', ['123', 'y']),
+            'y': '456'}
+        expected = {
+            'x': 72,
+            'y': 456}
+        self.assertEqual(expected, day7.analyze_circuit(circuit))

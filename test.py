@@ -196,17 +196,17 @@ class Day6_getBrightnessTests(unittest.TestCase):
         result = get_brightness(example)
         self.assertEqual(expected, result)
 
-class Day7ParseInstructionsTests(unittest.TestCase):
+class Day7_CircuitTests(unittest.TestCase):
     
     def test_example_circuit(self):
-        circuit = """123 -> x
+        circuit = day7.Circuit("""123 -> x
 456 -> y
 x AND y -> d
 x OR y -> e
 x LSHIFT 2 -> f
 y RSHIFT 2 -> g
 NOT x -> h
-NOT y -> i"""
+NOT y -> i""")
         expected = {
             'x': '123',
             'y': '456',
@@ -217,38 +217,38 @@ NOT y -> i"""
             'h': ('NOT', [None, 'x']),
             'i': ('NOT', [None, 'y'])
         }
-        wires = day7.parse_instructions(circuit)
-        self.assertEqual(expected, wires)
+        self.assertEqual(expected, circuit.circuit)
     
     def test_wire_to_wire(self):
-        circuit = """123 -> x
+        circuit = day7.Circuit("""123 -> x
 456 -> y
-x -> z"""
+x -> z""")
         expected = {
             'x': '123',
             'y': '456',
             'z': 'x'}
-        self.assertEqual(expected, day7.parse_instructions(circuit))
+        self.assertEqual(expected, circuit.circuit)
     
     def test_values_as_gate_inputs(self):
-        circuit = """123 -> x
-456 AND x -> y"""
+        circuit = day7.Circuit("""123 -> x
+456 AND x -> y""")
         expected = {
             'x': '123',
             'y': ('AND', ['456', 'x'])}
-        self.assertEqual(expected, day7.parse_instructions(circuit))
+        self.assertEqual(expected, circuit.circuit)
 
 class Day7ResolveValueTests(unittest.TestCase):
+
+    def setUp(self):
+        self.c = day7.Circuit()
+
     def test_resolve_and_gate(self):
-        circuit = {
+        self.c.circuit = {
             'a': ('AND', ['123', 'b']),
             'b': '456'
         }
         expected = 72
-        self.assertEqual(expected, day7.resolve_value('a', circuit))
-        
-        
-class Day7AnalyzeCircuitTests(unittest.TestCase):
+        self.assertEqual(expected, self.c.resolve_value('a'))
     
     def test_analyze_only_values(self):
         circuit = {

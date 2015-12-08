@@ -51,6 +51,6 @@ import day7
 import datetime
 
 print 'started: %s' % datetime.datetime.utcnow()
-circuit = day7.parse_instructions(day7.INPUT_STRING)
-print day7.analyze_circuit(circuit)
-print 'stopped: %s' % datetime.datetime.utcnow()
+circuit = day7.Circuit(day7.INPUT_STRING)
+print circuit.resolve_value('a')
+print 'stopped part 1: %s' % datetime.datetime.utcnow()

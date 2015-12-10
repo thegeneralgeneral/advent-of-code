@@ -28,13 +28,40 @@ def get_all_paths_from_a_to_b(a, b, graph, exclude_nodes=[]):
             [paths.append([a] + remaining_path) for remaining_path in paths_from_next_location_to_b]
     return paths
 
+def get_all_paths(graph):
+    paths = []
+    for source in graph.keys():
+        for dest in [loc for loc in graph.keys() if loc != source]:
+            paths.extend(get_all_paths_from_a_to_b(source, dest, graph))
+    return paths
+
 def get_length_of_path(path, graph):
     if len(path) == 2:
         return graph[path[0]][path[1]]
     else:
-        return graph[path[0]][path[1]] + get_length_of_path(path[1:])
-    
+        return graph[path[0]][path[1]] + get_length_of_path(path[1:], graph)
 
+def get_shortest_complete_path(graph):
+    shortest_dist = 999999999
+    shortest_path = None
+    for path in [p for p in get_all_paths(graph) if all([loc in p for loc in graph.keys()])]:
+        length = get_length_of_path(path, graph)
+        if length < shortest_dist:
+            shortest_dist = length
+            shortest_path = path
+    return shortest_path, shortest_dist
+
+def get_longest_complete_path(graph):
+    longest_dist = 0
+    longest_path = None
+    for path in [p for p in get_all_paths(graph) if all([loc in p for loc in graph.keys()])]:
+        length = get_length_of_path(path, graph)
+        if length > longest_dist:
+            longest_dist = length
+            longest_path = path
+    return longest_path, longest_dist
+        
+    
 
 
 INPUT_STRING = """AlphaCentauri to Snowdin = 66

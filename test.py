@@ -433,9 +433,37 @@ C to D = 3"""
         self.graph = day9.map_distances(input_string)
     
     def test_get_length_between_connected_nodes(self):
-        result = day9.get_length_of_path(['A', 'B'])
+        result = day9.get_length_of_path(['A', 'B'], self.graph)
         self.assertEqual(3, result)
     
     def test_get_length_of_longer_path(self):
-        result = day9.get_length_of_path(['A', 'C', 'B', 'D'])
+        result = day9.get_length_of_path(['A', 'C', 'B', 'D'], self.graph)
         self.assertEqual(2+5+4, result)
+
+import mock
+class Day9_GetShortestPathTests(unittest.TestCase):
+    
+    def setUp(self):
+        input_string = """A to B = 3
+A to C = 2
+A to B = 3
+B to C = 5
+B to D = 4
+C to D = 3"""
+        self.graph = day9.map_distances(input_string)
+
+    def test_gets_shortest_path(self):
+        result_path, result_dist = day9.get_shortest_complete_path(self.graph)
+        self.assertEqual(8, result_dist)
+    
+    def test_advent_puzzle(self):
+        advent_graph = day9.map_distances(day9.INPUT_STRING)
+        result_path, result_dist = day9.get_shortest_complete_path(advent_graph)
+        print result_path
+        print result_dist
+    
+    def test_advent_puzzle_part_2_longest_path(self):
+        advent_graph = day9.map_distances(day9.INPUT_STRING)
+        result_path, result_dist = day9.get_longest_complete_path(advent_graph)
+        print result_path
+        print result_dist

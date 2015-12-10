@@ -4,11 +4,11 @@
 # print day1.calculate_basement_step(day1.INPUT_STRING)
 
 # Day 2
-import day2
-inputs = day2.INPUT_STRING.split()
-lwh_tuples = [tuple([int(n) for n in l.split('x')]) for l in inputs]
-total = sum([day2.get_paper_area(l, w, h) for l, w, h in lwh_tuples])
-print total
+# import day2
+# inputs = day2.INPUT_STRING.split()
+# lwh_tuples = [tuple([int(n) for n in l.split('x')]) for l in inputs]
+# total = sum([day2.get_paper_area(l, w, h) for l, w, h in lwh_tuples])
+# print total
 
 # print day2.get_ribbon_length(2, 3, 4)
 # print day2.get_ribbon_length(1, 1, 10)
@@ -74,3 +74,10 @@ print total
 
 # Day 9
 # result = my_func(day9.INPUT_STRING)
+
+# Day 10
+import day10
+my_string = "1113222113"
+for i in range(50):
+    my_string = day10.look_and_say(my_string)
+print len(my_string)

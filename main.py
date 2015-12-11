@@ -76,8 +76,13 @@
 # result = my_func(day9.INPUT_STRING)
 
 # Day 10
-import day10
-my_string = "1113222113"
-for i in range(50):
-    my_string = day10.look_and_say(my_string)
-print len(my_string)
+# import day10
+# my_string = "1113222113"
+# for i in range(50):
+#     my_string = day10.look_and_say(my_string)
+# print len(my_string)
+
+# Day11
+import day11
+lp = "hxbxxyzz" # "hxbxwxba"
+print day11.generate_next_password(lp)

@@ -83,6 +83,11 @@
 # print len(my_string)
 
 # Day11
-import day11
-lp = "hxbxxyzz" # "hxbxwxba"
-print day11.generate_next_password(lp)
+# import day11
+# lp = "hxbxxyzz" # "hxbxwxba"
+# print day11.generate_next_password(lp)
+
+# day 12
+import day12
+import json
+print day12.get_total(json.loads(day12.INPUT_STRING))

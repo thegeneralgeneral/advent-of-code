@@ -60,9 +60,6 @@ def get_longest_complete_path(graph):
             longest_dist = length
             longest_path = path
     return longest_path, longest_dist
-        
-    
-
 
 INPUT_STRING = """AlphaCentauri to Snowdin = 66
 AlphaCentauri to Tambi = 28

@@ -11,7 +11,7 @@ def get_total(item):
         return sum([get_total(i) for i in item])
     elif isinstance(item, dict):
         if not 'red' in item.values():
-            return sum([get_total(value) for key, value in item.iteritems()])
+            return sum(item.values())
     return 0
         
         

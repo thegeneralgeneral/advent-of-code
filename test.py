@@ -662,80 +662,34 @@ Carol would lose 62 happiness units by sitting next to Alice."""
                 h = day13.get_happiness_delta_for_person(person, graph, path)
                 total += h
             if total > best:
-                print total
                 best = total
         print best
 
-import day14
-class Day14_Tests(unittest.TestCase):
+import day15
+class Day15_Tests(unittest.TestCase):
     
-    def setUp(self):
+    def test_test(self):
+        test_input = day15.EXAMPLE_STRING
+
+        ingredients = day15.get_ings_from_input(test_input)
         
-        speed, duration, rest_time = 14, 10, 127
-        self.comet = (speed, duration, rest_time)
-        speed, duration, rest_time = 16, 11, 162
-        self.dancer = (speed, duration, rest_time)
         
+        amounts = {'Butterscotch': 44, 'Cinnamon': 56}
+        result = day15.calculate_total_score(amounts, ingredients)
+        self.assertEqual(62842880, result)
+        
+        print day15.get_best_score(ingredients)
+        
+    def test_get_all_cookies(self):
+        test_input = """Butterscotch: capacity -1, durability -2, flavor 6, texture 3, calories 8
+Cinnamon: capacity 2, durability 3, flavor -2, texture -1, calories 3"""
+        ingredients = day15.get_ings_from_input(test_input)
+        print ingredients
+        
+        result = day15.generate_all_cookies_with_max_size_n(ingredients, 3)
+        result_list = [yielded for yielded in result]
+        self.assertEqual(6, len(result_list))
     
-    def test_get_distance_travelled(self):
-        t = 1  # seconds passed
-        result = day14.get_distance_travelled(self.comet, t)
-        self.assertEqual(14, result)
-        result = day14.get_distance_travelled(self.dancer, t)
-        self.assertEqual(16, result)
-        
-        t = 10  # seconds passed
-        result = day14.get_distance_travelled(self.comet, t)
-        self.assertEqual(140, result)
-        result = day14.get_distance_travelled(self.dancer, t)
-        self.assertEqual(160, result)
-        
-        t = 11  # seconds passed
-        result = day14.get_distance_travelled(self.comet, t)
-        self.assertEqual(140, result)
-        result = day14.get_distance_travelled(self.dancer, t)
-        self.assertEqual(176, result)
     
-        t = 1000  # seconds passed
-        result = day14.get_distance_travelled(self.comet, t)
-        self.assertEqual(1120, result)
-        result = day14.get_distance_travelled(self.dancer, t)
-        self.assertEqual(1056, result)
-    
-    def test_input(self):
-        import operator
-        parsed = day14.parse_input(day14.INPUT_STRING)
-        results = {}
-        t = 2503
-        for name, stats in parsed.iteritems():
-            results[name] = day14.get_distance_travelled(stats, t)
-        print results
-        print sorted(results.items(), key=operator.itemgetter(1))
         
-        points = day14.get_points(parsed, t)
-        print sorted(points.items(), key=operator.itemgetter(1))
-        
-    def test_get_points(self):
-        data = {'Comet': self.comet, 'Dancer': self.dancer}
-        t = 1
-        result = day14.get_points(data, t)
-        expect = {'Dancer': 1}
-        self.assertEqual(expect, result)
-        
-        t = 140
-        result = day14.get_points(data, t)
-        expect = {'Dancer': 139, 'Comet': 1}
-        self.assertEqual(expect, result)
-        
-        t = 1000
-        result = day14.get_points(data, t)
-        expect = {'Dancer': 689, 'Comet': 312}
-        self.assertEqual(expect, result)
-    
-    def test_get_points_2(self):
-        data = {
-            'A': (10, 1, 1),
-            'B': (11, 1, 2)}
-        for t in range(1, 5+1):
-            result = day14.get_points(data, t)
-            print result
+

@@ -88,6 +88,44 @@
 # print day11.generate_next_password(lp)
 
 # day 12
-import day12
-import json
-print day12.get_total(json.loads(day12.INPUT_STRING))
+# import day12
+# import json
+# print day12.get_total(json.loads(day12.INPUT_STRING))
+
+# import re
+# import day15
+
+# best_score = 0
+# print 'starting'
+# ings = day15.get_ings_from_input(day15.INPUT_STRING)
+# print ings
+# print day15.get_best_score_with_c_calories(ings, 500)
+
+import day16
+
+target_line = 'Sue 0: ' + (', '.join(day16.TARGET_STRING.split('\n')))
+target_aunt = day16.get_aunt_from_line(target_line)
+
+aunts = []
+
+for line in day16.INPUT_STRING.split('\n'):
+    aunts.append(day16.get_aunt_from_line(line))
+
+print target_aunt
+found = []
+for aunt in aunts:
+    if day16.aunts_match(target_aunt, aunt):
+        print 'FOUND: %s' % aunt
+        print target_aunt
+        found.append(aunt)
+    else:
+        # print 'Skip: %s' % aunt.aid
+        pass
+
+print 'Target:'
+print target_aunt
+
+print 'Found:'
+
+for f in found:
+    print f

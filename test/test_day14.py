@@ -51,6 +51,8 @@ class Day14_Tests(unittest.TestCase):
         points = day14.get_points(parsed, t)
         print sorted(points.items(), key=operator.itemgetter(1))
         
+        self.assertTrue(False)
+        
     def test_get_points(self):
         data = {'Comet': self.comet, 'Dancer': self.dancer}
         t = 1

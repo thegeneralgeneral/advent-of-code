@@ -44,3 +44,13 @@ x -> z""")
         self.assertEqual(expected, circuit.circuit)
 
 # TODO re-add unit tests for Day 7? Ended up refactoring w/o TDD...
+
+
+
+# import day7
+# import datetime
+
+# print 'started: %s' % datetime.datetime.utcnow()
+# circuit = day7.Circuit(day7.INPUT_STRING)
+# print circuit.resolve_value('a')
+# print 'stopped part 1: %s' % datetime.datetime.utcnow()

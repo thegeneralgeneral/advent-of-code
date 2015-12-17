@@ -12,6 +12,11 @@ class Day4Tests(unittest.TestCase):
         key = 'pqrstuv'
         result = get_suffix_num_resulting_in_five_zeroes(key)
         self.assertEqual(1048970, result)
+
+    def test_puzzle_1(self):
+        key = 'iwrupvqb'
+        result = get_suffix_num_resulting_in_five_zeroes(key)
+        self.assertEqual(346386, result)
     
     def test_puzzle_2(self):
         key = 'iwrupvqb'

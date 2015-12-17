@@ -44,22 +44,10 @@ class Day10_GenerateNextChunkTests(unittest.TestCase):
             result.append(yielded)
         self.assertEqual(expected, result)
 
-import day11
 
-class Day11_GenerateNextPasswordTests(unittest.TestCase):
-    
-    def test_1(self):
-        self.assertEqual("abcdffaa", day11.generate_next_password("abcdefgh"))
-        # self.assertEqual("ghjaabcc", day11.generate_next_password("ghijklmn"))
-
-class Day11_IncrementStringTests(unittest.TestCase):
-    
-    def test_increment_string(self):
-        self.assertEqual("abcxyzbc", day11.increment_string("abcxyzbb"))
-
-    def test_increment_zzzzzzzz_wraps(self):
-        self.assertEqual("aaaaaaaa", day11.increment_string("zzzzzzzz"))
-    
-    def test_increment_zzzzzzzz_wraps(self):
-        self.assertEqual("aaaaaaaa", day11.increment_string("zzzzzzzz"))
-        
+# Day 10
+# import day10
+# my_string = "1113222113"
+# for i in range(50):
+#     my_string = day10.look_and_say(my_string)
+# print len(my_string)

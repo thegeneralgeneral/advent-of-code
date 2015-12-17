@@ -1,4 +1,4 @@
-
+import unittest
 import day12
 
 class Day12_GetTotalTests(unittest.TestCase):
@@ -13,4 +13,7 @@ class Day12_GetTotalTests(unittest.TestCase):
         actual = day12.get_total(input_dict)
         self.assertEqual(expect, actual)
 
-import day13
+# day 12
+# import day12
+# import json
+# print day12.get_total(json.loads(day12.INPUT_STRING))

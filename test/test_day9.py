@@ -104,3 +104,7 @@ C to D = 3"""
         result_path, result_dist = day9.get_longest_complete_path(advent_graph)
         print result_path
         print result_dist
+
+
+# Day 9
+# result = my_func(day9.INPUT_STRING)

@@ -125,3 +125,21 @@ class Day8_getNumEncodedCharsTests(unittest.TestCase):
         input_str = r'"\x27"'
         result = day8.get_num_encoded_chars(input_str)
         self.assertEqual(11, result)
+
+
+# from day8 import get_num_code_chars, get_num_str_chars, get_num_encoded_chars, INPUT_STRING
+
+# words = INPUT_STRING.split('\n')
+# # part 1
+# total_code_chars = sum([get_num_code_chars(s) for s in words])
+# total_str_chars = sum([get_num_str_chars(s) for s in words])
+# print '%s - %s = %s' % (total_code_chars, total_str_chars, \
+#     total_code_chars-total_str_chars)
+
+# # part 2
+# total_encoded_chars = sum([get_num_encoded_chars(s) for s in words])
+# print 'Part 2'
+# print '%s - %s = %s' % (total_encoded_chars, total_code_chars, \
+#     total_encoded_chars - total_code_chars)
+# # 1461 - too low
+# # 2117

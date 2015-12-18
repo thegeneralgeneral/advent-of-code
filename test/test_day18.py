@@ -1,195 +1,147 @@
 import unittest
-from life import generate_next_cell_state, DEAD, ALIVE, count_alive_neighbours, generate_next_state
+from day18 import Light, Grid, convert_string_to_grid, OFF, ON, INPUT_STRING
+
+class ConvertStringToGridTests(unittest.TestCase):
+    
+    def test_convert_example_string(self):
+        example = """.#.#.#
+...##.
+#....#
+..#...
+#.#..#
+####.."""
+        grid =  convert_string_to_grid(example)
+        self.assertEqual(example, str(grid))
+
+class GetNeighboursTests(unittest.TestCase):
+    
+    def setUp(self):
+        self.w = 6
+        self.h = 6
+        self.grid = Grid(self.w, self.h, [])
+    
+    def test_get_corner_neighbours(self):
+        result = set([l.coords for l in self.grid.get_neighbours(0, 0)])
+        expect = {(1, 0), (0, 1), (1, 1)}
+        self.assertEqual(expect, result)
+    
+    def test_get_far_corner_neighbours(self):
+        result = set([l.coords for l in self.grid.get_neighbours(5, 5)])
+        expect = {(4, 4), (5, 4), (4, 5)}
+        self.assertEqual(expect, result)
+    
+    def test_get_middle_neighbours(self):
+        result = set([l.coords for l in self.grid.get_neighbours(3, 3)])
+        expect = {(2, 2), (2, 3), (2, 4), (3, 2), (3, 4), (4, 2), (4, 3), (4, 4)}
+        self.assertEqual(expect, result)
 
 
-class GenerateNextCellStateTests(unittest.TestCase):
+class GetNextStateTests(unittest.TestCase):
 
-    def test_live_with_fewer_than_2_neighbours_dies(self):
-        self.assertEqual(DEAD, generate_next_cell_state(ALIVE, 0))
-        self.assertEqual(DEAD, generate_next_cell_state(ALIVE, 1))
+    def setUp(self):
+        example = \
+""".#.#.#
+...##.
+#....#
+..#...
+#.#..#
+####.."""
+        self.grid = convert_string_to_grid(example)
+    
+    def test_on_stays_on(self):
+        # 2 or 3
+        next_state = self.grid.get_next_cell_state(self.grid.lights[3][1])
+        self.assertEqual(ON, next_state)
+        next_state = self.grid.get_next_cell_state(self.grid.lights[0][5])
+        self.assertEqual(ON, next_state)
 
-    def test_dead_with_fewer_than_2_neighbours_still_dead(self):
-        self.assertEqual(DEAD, generate_next_cell_state(DEAD, 0))
-        self.assertEqual(DEAD, generate_next_cell_state(DEAD, 1))
+    def test_on_turns_off(self):
+        next_state = self.grid.get_next_cell_state(self.grid.lights[1][0])
+        self.assertEqual(OFF, next_state)
+        next_state = self.grid.get_next_cell_state(self.grid.lights[0][2])
+        self.assertEqual(OFF, next_state)
+    
+    def test_off_stays_off(self):
+        next_state = self.grid.get_next_cell_state(self.grid.lights[0][0])
+        self.assertEqual(OFF, next_state)
+        next_state = self.grid.get_next_cell_state(self.grid.lights[1][4])
+        self.assertEqual(OFF, next_state)
+    
+    def test_off_turns_on(self):
+        next_state = self.grid.get_next_cell_state(self.grid.lights[2][1])
+        self.assertEqual(ON, next_state)
+        next_state = self.grid.get_next_cell_state(self.grid.lights[5][1])
+        self.assertEqual(ON, next_state)
 
-    def test_live_cell_with_two_neighbours_lives(self):
-        self.assertEqual(ALIVE, generate_next_cell_state(ALIVE, 2))
+class GridStepTests(unittest.TestCase):
 
-    def test_live_cell_with_three_neighbours_lives(self):
-        self.assertEqual(ALIVE, generate_next_cell_state(ALIVE, 3))
+    def setUp(self):
+        example = \
+""".#.#.#
+...##.
+#....#
+..#...
+#.#..#
+####.."""
+        self.grid = convert_string_to_grid(example)
 
-    def test_live_cell_with_more_than_three_neighbours_dies(self):
-        for i in range(4, 9):
-            self.assertEqual(DEAD, generate_next_cell_state(ALIVE, i))
-
-    def test_dead_cell_with_exactly_three_neighbours_lives(self):
-        for i in range(9):
-            if i == 3:
-                self.assertEqual(ALIVE, generate_next_cell_state(DEAD, 3))
-            else:
-                self.assertEqual(DEAD, generate_next_cell_state(DEAD, i))
-
-class CountNeighboursTests(unittest.TestCase):
-
-    def test_count_neighbours_returns_0(self):
-        blank_grid = [
-            [0, 0, 0],
-            [0, 0, 0],
-            [0, 0, 0]
-        ]
-        result = count_alive_neighbours(blank_grid, 1, 1)
-        self.assertEqual(0, result)
-
-    def test_one_neighbour(self):
-        grid = [
-            [1, 0, 0],
-            [0, 0, 0],
-            [0, 0, 0]
-        ]
-        result = count_alive_neighbours(grid, 1, 1)
-        self.assertEqual(1, result)
-
-    def test_eight_neighbours_of_dead_cell(self):
-        grid = [
-            [1, 1, 1],
-            [1, 0, 1],
-            [1, 1, 1]
-        ]
-        result = count_alive_neighbours(grid, 1, 1)
-        self.assertEqual(8, result)
-
-    def test_eight_neighbours_of_live_cell(self):
-        grid = [
-            [1, 1, 1],
-            [1, 1, 1],
-            [1, 1, 1]
-        ]
-        result = count_alive_neighbours(grid, 1, 1)
-        self.assertEqual(8, result)
-
-    def test_eight_neighbours_of_live_cell_larger_grid(self):
-        grid = [
-            [1, 1, 1, 1],
-            [1, 1, 1, 1],
-            [1, 1, 1, 1]
-        ]
-        result = count_alive_neighbours(grid, 1, 1)
-        self.assertEqual(8, result)
-
-    def test_lots_of_cells(self):
-        grid = [
-            [1, 0, 1, 1, 0],
-            [1, 1, 1, 1, 0],
-            [1, 1, 1, 0, 1],
-            [1, 0, 1, 1, 0],
-            [1, 1, 1, 1, 0]
-        ]
-        result = count_alive_neighbours(grid, 1, 2)
-        self.assertEqual(7, result)
-
-    def test_corner(self):
-        grid = [
-            [1, 0, 1, 1, 0],
-            [1, 1, 1, 1, 0],
-            [1, 1, 1, 0, 1],
-            [1, 0, 1, 1, 0],
-            [1, 1, 1, 1, 0]
-        ]
-        result = count_alive_neighbours(grid, 0, 0)
-        self.assertEqual(4, result)  # toroidal
-
-    def test_left_border(self):
-        grid = [
-            [1, 0, 1, 1, 0],
-            [1, 1, 1, 1, 0],
-            [1, 1, 1, 0, 1],
-            [1, 0, 1, 1, 0],
-            [1, 1, 1, 1, 0]
-        ]
-        result = count_alive_neighbours(grid, 0, 3)
-        self.assertEqual(5, result)
-
-    def test_bottom_border(self):
-        grid = [
-            [1, 0, 1, 1, 0],
-            [1, 1, 1, 1, 0],
-            [1, 1, 1, 0, 1],
-            [1, 0, 1, 1, 0],
-            [1, 1, 1, 1, 0]
-        ]
-        result = count_alive_neighbours(grid, 3, 5)
-        self.assertEqual(6, result)
-
-    def test_two_rows(self):
-        grid = [
-            [1, 0, 1, 1, 0],
-            [1, 1, 1, 1, 0],
-        ]
-        result = count_alive_neighbours(grid, 2, 2)
-        self.assertEqual(6, result)
-
-
-
-class GenerateNextStateTests(unittest.TestCase):
-
-    #
-    # Still Lifes
-    #
-
-    def test_block(self):
-        state = [
-            [0, 0, 0, 0],
-            [0, 1, 1, 0],
-            [0, 1, 1, 0],
-            [0, 0, 0, 0]
-        ]
-        self.assertEqual(state, generate_next_state(state))
-
-    def test_beehive(self):
-        state = [
-            [0, 0, 0, 0, 0, 0],
-            [0, 0, 1, 1, 0, 0],
-            [0, 1, 0, 0, 1, 0],
-            [0, 0, 1, 1, 0, 0],
-            [0, 0, 0, 0, 0, 0]
-        ]
-        self.assertEqual(state, generate_next_state(state))
-
-    def test_loaf(self):
-        state = [
-            [0, 0, 0, 0, 0, 0],
-            [0, 0, 1, 1, 0, 0],
-            [0, 1, 0, 0, 1, 0],
-            [0, 0, 1, 0, 1, 0],
-            [0, 0, 0, 1, 0, 0],
-            [0, 0, 0, 0, 0, 0],
-        ]
-        self.assertEqual(state, generate_next_state(state))
-
-    def test_boat(self):
-        state = [
-            [0, 0, 0, 0, 0],
-            [0, 1, 1, 0, 0],
-            [0, 1, 0, 1, 0],
-            [0, 0, 1, 0, 0],
-            [0, 0, 0, 0, 0]
-        ]
-        self.assertEqual(state, generate_next_state(state))
-
-    def test_blinker(self):
-        initial_state = [
-            [0, 0, 0, 0, 0],
-            [0, 0, 1, 0, 0],
-            [0, 0, 1, 0, 0],
-            [0, 0, 1, 0, 0],
-            [0, 0, 0, 0, 0]
-        ]
-        expected_state = [
-            [0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0],
-            [0, 1, 1, 1, 0],
-            [0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0]
-        ]
-        self.assertEqual(expected_state, generate_next_state(initial_state))
-
+    def test_step_1(self):
+        expect = """..##..
+..##.#
+...##.
+......
+#.....
+#.##.."""
+        print self.grid
+        print
+        self.grid.step()
+        print self.grid
+        self.assertEqual(expect, str(self.grid))
+        
+    
+    def test_step_4(self):
+        expect = """......
+......
+..##..
+..##..
+......
+......"""
+        print self.grid
+        print
+        for _ in range(4):
+            self.grid.step()
+        print self.grid
+        print self.grid.get_num_lights()
+        self.assertEqual(expect, str(self.grid))
+    
+    def test_puzzle(self):
+        grid = convert_string_to_grid(INPUT_STRING)
+        for _ in range(100):
+            grid.step()
+        print grid.get_num_lights()
+    
+    def test_example_2(self):
+        grid = convert_string_to_grid("""##.#.#
+...##.
+#....#
+..#...
+#.#..#
+####.#""")
+        expect = """##.###
+.##..#
+.##...
+.##...
+#.#...
+##...#"""
+        print grid
+        for _ in range(5):
+            grid.step_with_stuck_lights()
+        print 
+        print grid
+        self.assertEqual(expect, str(grid))
+        
+    def test_puzzle_2(self):
+        grid = convert_string_to_grid(INPUT_STRING)
+        for _ in range(100):
+            grid.step_with_stuck_lights()
+        print grid.get_num_lights()

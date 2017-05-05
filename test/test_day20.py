@@ -40,7 +40,13 @@ class GetFirstHouseWithNPresents(unittest.TestCase):
         self.assertEqual(4, get_first_house_with_n_presents(70))
         
     def test_puzzle(self):
-        a, b = 900000, 1000000
+        a, b = 500000, 505000 
+        # Checked:
+        # 50k - 65k
+        # 90k - 91k
+        # 150k - 152k
+        # 500k - 501k
+        
         m = a
         
         # binary search?
